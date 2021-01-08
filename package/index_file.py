@@ -1,8 +1,8 @@
-from antywirus.file import File
-from antywirus.antiwirus_io import read_from_index_file, write_to_index_file
+from .file import File
+from .antiwirus_io import read_from_index_file, write_to_index_file
 
 
-class Database():
+class IndexFile():
     def __init__(self, files_list=None, path="./index_file"):
         self.set_files_list(files_list)
         self.set_path(path)
@@ -22,8 +22,8 @@ class Database():
         else:
             self._files_list = []
 
-    def add_file(self, name, path, size, mod_date, scan_date):
-        file = File(name, path, size, mod_date, scan_date)
+    def add_file(self, name, path, size, ftype, mod_date, scan_date):
+        file = File(name, path, size, ftype, mod_date, scan_date)
         self._files_list.append(file)
 
     def get_index_file(self):
