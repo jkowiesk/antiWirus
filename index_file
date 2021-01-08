@@ -1,0 +1,5 @@
+name,path,size,ftype,mod_date,scan_date
+file_test.py,/home/kuba/v2/testy,36,file,2021-01-08 20:58:34,
+file.py,/home/kuba/v2/testy,15,file,2021-01-08 20:58:40,
+gitara,/home/kuba/v2/testy/git,14,file,2021-01-08 21:15:04,
+marek,/home/kuba/v2/testy/git,0,file,2021-01-08 21:16:05,

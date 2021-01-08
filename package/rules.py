@@ -5,8 +5,7 @@ RULES = []
 
 
 def rule_virus_in_string(file, str):
+    pass
 
 
-
-
-RULES = [rule_bad_string]
+RULES = [rule_virus_in_string]

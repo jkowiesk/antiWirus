@@ -1,9 +1,9 @@
 from .file import File
 from .antiwirus_io import read_from_index_file, write_to_index_file
-
+import os
 
 class IndexFile():
-    def __init__(self, files_list=None, path="./index_file"):
+    def __init__(self, files_list=None, path=f"{os.getcwd()}/index_file"):
         self.set_files_list(files_list)
         self.set_path(path)
 

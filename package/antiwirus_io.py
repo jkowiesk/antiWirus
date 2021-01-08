@@ -34,11 +34,11 @@ def get_file_object(file_name, path):
 
     time_format = "%a %b %d %H:%M:%S %Y"
     file_mod_date = time.ctime(info.st_mtime)
-    file_mod_date = datetime.datetime.strptime(file_mod_date, time_format)
+    file_mod_date = datetime.strptime(file_mod_date, time_format)
 
     file_size = str(info.st_size)
 
-    file_type = "folder" if info.st_type == 16893 else "file"
+    file_type = "folder" if info.st_mode == 16893 else "file"
 
     name, path, size, ftype, mod_date = file_name, path, file_size, file_type, file_mod_date
 

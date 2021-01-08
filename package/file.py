@@ -15,7 +15,7 @@ class File():
         return self._mod_date
 
     def set_mod_date(self, mod_date):
-        mod_date = datetime.strptime(mod_date, "%Y-%m-%d %H:%M:%S")
+        # mod_date = datetime.strptime(mod_date, "%Y-%m-%d %H:%M:%S")
         self._mod_date = mod_date
 
     def scan_date(self):
@@ -23,7 +23,7 @@ class File():
 
     def set_scan_date(self, scan_date):
         if scan_date:
-            scan_date = datetime.strptime(scan_date, "%Y-%m-%d %H:%M:%S")
+            # scan_date = datetime.strptime(scan_date, "%Y-%m-%d %H:%M:%S")
             self._scan_date = scan_date
         else:
             self._scan_date = None

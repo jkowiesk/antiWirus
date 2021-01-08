@@ -25,13 +25,19 @@ class AntiWirus():
         files = self._get_files(scan_path)
         self.index_file().set_files_list(files)
 
+    def index_to_file(self):
+        self.index_file().dump_to_index_file()
+
+    def from_file_to_index(self):
+        self.index_file().get_index_file()
+
     def _get_files(self, path):
         os.chdir(path)
         files = []
         for file_name in os.listdir():
             file = get_file_object(file_name, path)
             if file.ftype == "folder":
-                files += self._scan_path_for_files(f"{path}/{file.name}")
+                files += self._get_files(f"{path}/{file.name}")
             else:
                 files.append(file)
         return files
