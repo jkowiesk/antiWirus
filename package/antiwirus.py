@@ -1,8 +1,8 @@
 from .index_file import IndexFile, File
-from .antiwirus_io import get_file_object
-from .rules import RULES
+from .antiwirus_io import get_file_object, get_files_str, get_secrets
 import os
 
+RULES = get_secrets()
 
 class AntiWirus():
     def __init__(self):
@@ -21,15 +21,27 @@ class AntiWirus():
     def set_rules(self, rules):
         self._rules = rules
 
-    def scan_for_files_to_index(self, scan_path):
+    def set_index_file_path(self, new_path):
+        self.index_file().set_path(new_path)
+
+    def get_files_to_index(self, scan_path):
         files = self._get_files(scan_path)
         self.index_file().set_files_list(files)
-
-    def index_to_file(self):
         self.index_file().dump_to_index_file()
 
-    def from_file_to_index(self):
+    def update_index_file(self):
+        pass
+
+    def from_file_to_list(self):
         self.index_file().get_index_file()
+
+    def easy_scan(self, path):
+        files = self._get_files(path)
+        for file in files:
+            for rule in self.rules():
+                file_str = get_files_str()
+                if rule(file, file_str):
+                    pass
 
     def _get_files(self, path):
         os.chdir(path)

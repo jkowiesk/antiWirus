@@ -32,4 +32,9 @@ class File():
         """
         Return true if file was modified after last scan, or false if not
         """
-        return True if self.mod_date() > self.scan_date() else False
+        if self.scan_date():
+            return True if self.mod_date() > self.scan_date() else False
+        else:
+            return True
+
+        # return True if (self.mod_date() > self.scan_date()) else False

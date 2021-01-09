@@ -3,6 +3,7 @@ import os
 import time
 from .file import File
 from datetime import datetime
+import json
 
 
 def read_from_index_file(handle):
@@ -45,3 +46,17 @@ def get_file_object(file_name, path):
     file = File(name, path, size, ftype, mod_date)
 
     return file
+
+
+def get_files_str(file):
+    path = f"{file.path}/{file.name}"
+    with open(path, "r") as handle:
+        file_str = "".join(handle.read().splitlines())
+    return file_str
+
+
+def get_secrets():
+    path = f"{os.getcwd()}/package/secrets.json"
+    with open(path, "r") as handle:
+        secrets = json.load(handle)
+    return secrets

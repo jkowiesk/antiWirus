@@ -26,10 +26,19 @@ def test_write_to_index_file():
 
     write_to_index_file(handle, index.files_list())
 
-    a = (handle.getvalue().splitlines())
-
     assert handle.getvalue().splitlines() == [
         "name,path,size,ftype,mod_date,scan_date",
         "test1,/home/kuba/test,33,file,2020-12-25 19:30:56,2020-12-25 19:30:56",
         "test2,/home/kuba/test,100,file,2020-12-25 19:30:52,2020-12-25 19:30:30"
     ]
+
+
+def test_get_get_secrets():
+    handle = ('{ "extensions": ['
+        '"iso",'
+        '"exe",'
+        '"virus"'
+    '], "dangerous_strings": ['
+        '"X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"'
+    ']}'
+    )
