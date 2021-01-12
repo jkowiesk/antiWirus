@@ -1,8 +1,8 @@
 from .index_file import IndexFile, File
-from .antiwirus_io import get_file_object, get_files_str, get_secrets
+from .antiwirus_io import get_file_object, get_files_str
+from .rules import RULES
 import os
 
-RULES = get_secrets()
 
 class AntiWirus():
     def __init__(self):
@@ -24,24 +24,50 @@ class AntiWirus():
     def set_index_file_path(self, new_path):
         self.index_file().set_path(new_path)
 
-    def get_files_to_index(self, scan_path):
+    def get_files_to_index_file(self, scan_path):
         files = self._get_files(scan_path)
+        self.index_file().set_scan_path(scan_path)
         self.index_file().set_files_list(files)
         self.index_file().dump_to_index_file()
-
-    def update_index_file(self):
-        pass
 
     def from_file_to_list(self):
         self.index_file().get_index_file()
 
+    def update_index_file(self):
+        scan_path = self.index_file().scan_path()
+        if scan_path:
+            self.get_file_object(scan_path)
+        else:
+            raise Exception
+
+    def fast_scan(self):
+        scan_path = self.index_file().scan_path()
+        files = self._get_files(scan_path)
+        viruses = []
+        for file in files:
+            if file.is_modified():
+                file_str = get_files_str(file)
+                for rule in self.rules():
+                    if rule(file, file_str):
+                        viruses.append((file, file_str, rule))
+        return viruses
+
     def easy_scan(self, path):
         files = self._get_files(path)
+        viruses = []
         for file in files:
-            for rule in self.rules():
-                file_str = get_files_str()
-                if rule(file, file_str):
-                    pass
+            if file.is_modified():
+                file_str = get_files_str(file)
+                for rule in self.rules():
+                    if rule(file, file_str):
+                        viruses.append((file, file_str, rule))
+        return viruses
+
+    def repair(self, viruses, mode):
+        for file, file_str, rule in viruses:
+            new_file = rule(file, file_str, mode="repair")
+            self.index_file().change_file(file, new_file)
+        return None
 
     def _get_files(self, path):
         os.chdir(path)

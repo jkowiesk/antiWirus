@@ -29,6 +29,11 @@ def write_to_index_file(handle, files):
         writer.writerow({'name': file.name, 'path': file.path, 'size': file.size, 'ftype': file.ftype, 'mod_date': file.mod_date(), 'scan_date': file.scan_date()})
 
 
+def repair_dangerous_string(handle, file_str, virus_str):
+    file_str = file_str.replace(virus_str, "")
+    handle.write(file_str)
+
+
 def get_file_object(file_name, path):
     os.chdir(path)
     info = os.stat(file_name)
@@ -50,7 +55,7 @@ def get_file_object(file_name, path):
 
 def get_files_str(file):
     path = f"{file.path}/{file.name}"
-    with open(path, "r") as handle:
+    with open(path, "r", encoding="IBM437") as handle:
         file_str = "".join(handle.read().splitlines())
     return file_str
 
@@ -60,3 +65,4 @@ def get_secrets():
     with open(path, "r") as handle:
         secrets = json.load(handle)
     return secrets
+

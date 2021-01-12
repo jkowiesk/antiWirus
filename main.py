@@ -1,10 +1,10 @@
-from package.antiwirus import AntiWirus, IndexFile
+from package.antiwirus_ui import AntyWirusUI
 
 
-antywirus = AntiWirus()
+def main():
+    ui = AntyWirusUI()
+    ui.main()
 
-scan_path = "/home/kuba/v2/testy"
 
-antywirus.get_files_to_index(scan_path)
-
-antywi
+if __name__ == "main":
+    main()

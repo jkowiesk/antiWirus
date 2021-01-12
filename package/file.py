@@ -38,3 +38,15 @@ class File():
             return True
 
         # return True if (self.mod_date() > self.scan_date()) else False
+
+    def extension(self):
+        """
+        Picks out only extension from files name and returns it, if no extension returns None
+        """
+        name_list = self.name.split(".")
+        return name_list[-1] if len(name_list) > 1 else None
+
+    def __eq__(self, other):
+        self_full_path = f"{self.path}/{self.name}"
+        other_full_path = f"{other.path}/{other.name}"
+        return True if self_full_path == other_full_path else False
