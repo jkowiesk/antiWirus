@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class File():
-    def __init__(self, name: str, path: str, size: str, ftype: str, mod_date: str, scan_date: str = None):
+    def __init__(self, name: str, path: str, size: str, ftype: str, mod_date: datetime = None, scan_date: datetime = None):
         self.name = name
         self.path = path
         self.size = size
@@ -15,15 +15,20 @@ class File():
         return self._mod_date
 
     def set_mod_date(self, mod_date):
-        # mod_date = datetime.strptime(mod_date, "%Y-%m-%d %H:%M:%S")
-        self._mod_date = mod_date
+        if mod_date:
+            if type(mod_date) == str:
+                mod_date = datetime.strptime(mod_date, "%Y-%m-%d %H:%M:%S")
+            self._mod_date = mod_date
+        else:
+            self._mod_date = None
 
     def scan_date(self):
         return self._scan_date
 
     def set_scan_date(self, scan_date):
         if scan_date:
-            # scan_date = datetime.strptime(scan_date, "%Y-%m-%d %H:%M:%S")
+            if type(scan_date) == str:
+                scan_date = datetime.strptime(scan_date, "%Y-%m-%d %H:%M:%S")
             self._scan_date = scan_date
         else:
             self._scan_date = None
@@ -41,7 +46,8 @@ class File():
 
     def extension(self):
         """
-        Picks out only extension from files name and returns it, if no extension returns None
+        Picks out only extension from files name and returns it,
+        if no extension returns None
         """
         name_list = self.name.split(".")
         return name_list[-1] if len(name_list) > 1 else None

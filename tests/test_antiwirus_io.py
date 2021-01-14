@@ -1,7 +1,8 @@
-from ..package.antiwirus_io import read_from_index_file, write_to_index_file, repair_dangerous_string
+from ..package.antiwirus_io import (read_from_index_file, write_to_index_file,
+                                    repair_dangerous_string, get_secrets)
 from io import StringIO
 from ..package.index_file import IndexFile, File
-
+import os
 
 def test_read_from_index_file_basic_input():
     handle = StringIO(
@@ -38,15 +39,19 @@ def test_write_to_index_file():
     ]
 
 
-def test_get_get_secrets():
-    handle = ('{ "extensions": ['
-        '"iso",'
-        '"exe",'
-        '"virus"'
-    '], "dangerous_strings": ['
-        '"X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"'
-    ']}'
-    )
+def test_secrets_import(monkeypatch):
+    path = f"{os.getcwd()}"
+
+    if "tests" in path:
+        path = f"{path}/../.."
+
+    monkeypatch.setattr("os.getcwd", lambda : f"{path}")
+
+    rules = get_secrets()
+
+    dangerous_strings = rules["dangerous_strings"][0]
+
+    assert dangerous_strings == "X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*"
 
 
 def test_repair_dangerous_string():

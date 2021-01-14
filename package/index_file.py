@@ -37,6 +37,12 @@ class IndexFile():
         else:
             self._scan_path = None
 
+    def get_scan_date(self, file_scan_date):
+        for file in self._files_list:
+            if file == file_scan_date:
+                return file.scan_date()
+        return None
+
     def delete_file(self, old_file):
         self._files_list.remove(old_file)
 

@@ -44,7 +44,7 @@ def get_file_object(file_name, path):
 
     file_size = str(info.st_size)
 
-    file_type = "folder" if info.st_mode == 16893 else "file"
+    file_type = "folder" if os.path.isdir(f"{path}/{file_name}") else "file"
 
     name, path, size, ftype, mod_date = file_name, path, file_size, file_type, file_mod_date
 
@@ -65,4 +65,3 @@ def get_secrets():
     with open(path, "r") as handle:
         secrets = json.load(handle)
     return secrets
-
