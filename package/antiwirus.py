@@ -12,8 +12,18 @@ class AntiWirus():
     def index_file(self):
         return self._index_file
 
-    def set_index_file(self):
-        self._index_file = IndexFile()
+    def set_index_file(self, path=None, scan_path=None):
+        self._index_file = IndexFile(None, path, scan_path)
+
+    def is_index_file_loaded(self):
+        if self._index_file.path():
+            return True
+        else:
+            return False
+
+    def remove_index_file(self):
+        os.remove(f"{self._index_file.path()}/.index_file")
+        self.set_index_file(path=self._index_file.path())
 
     def rules(self):
         return self._rules
@@ -30,8 +40,18 @@ class AntiWirus():
         self.index_file().set_files_list(files)
         self.index_file().dump_to_index_file()
 
+    def get_scan_path(self):
+        if self._index_file.files_list():
+            paths = []
+            for file in self._index_file.files_list():
+                paths.append(file.path)
+            self._index_file.set_scan_path(min(paths))
+
     def from_file_to_list(self):
         self.index_file().get_index_file()
+
+    def dumb_list_to_flie(self):
+        self.index_file().dump_to_index_file()
 
     def update_index_file(self):
         scan_path = self.index_file().scan_path()
@@ -63,11 +83,14 @@ class AntiWirus():
                         viruses.append((file, file_str, rule))
         return viruses
 
-    def repair(self, viruses, mode):
+    def repair_fast_scan(self, viruses):
         for file, file_str, rule in viruses:
             new_file = rule(file, file_str, mode="repair")
             self.index_file().change_file(file, new_file)
-        return None
+
+    def repair_easy_scan(self, viruses):
+        for file, file_str, rule in viruses:
+            new_file = rule(file, file_str, mode="repair")
 
     def _get_files(self, path):
         os.chdir(path)

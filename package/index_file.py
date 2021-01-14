@@ -5,7 +5,7 @@ CWD = os.getcwd()
 
 
 class IndexFile():
-    def __init__(self, files_list=None, path=f"{CWD}/index_file", scan_path=None):
+    def __init__(self, files_list=None, path=None, scan_path=None):
         self.set_files_list(files_list)
         self.set_path(path)
         self.set_scan_path(scan_path)
@@ -13,8 +13,11 @@ class IndexFile():
     def path(self):
         return self._path
 
-    def set_path(self, path):
-        self._path = path
+    def set_path(self, path=f"{CWD}"):
+        if path:
+            self._path = path
+        else:
+            self._path = None
 
     def files_list(self):
         return self._files_list
@@ -48,10 +51,12 @@ class IndexFile():
             return None
 
     def get_index_file(self):
-        with open(self.path(), "r") as handle:
+        path = f"{self.path()}/.index_file"
+        with open(path, "r") as handle:
             files = read_from_index_file(handle)
         self.set_files_list(files)
 
     def dump_to_index_file(self):
-        with open(self.path(), "w") as handle:
+        path = f"{self.path()}/.index_file"
+        with open(path, "w") as handle:
             write_to_index_file(handle, self._files_list)

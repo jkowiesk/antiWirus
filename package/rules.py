@@ -18,6 +18,8 @@ def rule_dangerous_string(file, file_str, mode=""):
     if mode == "repair":
         for dangerous_string in secrets["dangerous_strings"]:
             if dangerous_string in file_str:
+                with open(f"{file.path}/{file.name}", "w") as handle:
+                    repair_dangerous_string(handle, file_str, dangerous_string)
                 return file
     else:
         for dangerous_string in secrets["dangerous_strings"]:
