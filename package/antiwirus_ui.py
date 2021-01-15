@@ -5,7 +5,7 @@ from time import time, sleep
 
 global CYCLE_TIME
 
-CYCLE_TIME = 30
+CYCLE_TIME = 60
 
 
 class AntyWirusUI:
