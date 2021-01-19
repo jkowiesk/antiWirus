@@ -51,25 +51,40 @@ class IndexFile():
         return None
 
     def delete_file(self, old_file):
+        """
+        Deletes file
+        """
         self._files_list.remove(old_file)
 
     def change_file(self, old_file, new_file):
+        """
+        Deletes old file and adds new one to it
+        """
         self.delete_file(old_file)
         self.add_file(new_file)
 
     def add_file(self, new_file):
+        """
+        Adds new file to list
+        """
         if new_file:
             self._files_list.append(new_file)
         else:
             return None
 
     def get_index_file(self):
+        """
+        Reads from index file
+        """
         path = f"{self.path()}/.index_file"
         with open(path, "r") as handle:
             files = read_from_index_file(handle)
         self.set_files_list(files)
 
     def dump_to_index_file(self):
+        """
+        Writes files to index file
+        """
         path = f"{self.path()}/.index_file"
         with open(path, "w") as handle:
             write_to_index_file(handle, self._files_list)

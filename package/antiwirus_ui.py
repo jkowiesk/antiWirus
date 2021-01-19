@@ -121,15 +121,15 @@ class AntyWirusUI:
     def _set_new_index_file(self):
         anwser_is_no = None
         if self._antivirus.is_index_file_loaded():
-            anwser_is_no = self._remove_loaded_index_file()
-
-        if anwser_is_no == "n":
-            return None
+            self._remove_loaded_index_file("continue")
 
         files_path = self._get_path("Choose a path for index file: ")
 
-        while not os.path.exists(files_path):
-            self._remove_existing_index_file(files_path)
+        if os.path.exists(f"{files_path}/.index_file"):
+            anwser_is_no = self._remove_existing_index_file(files_path)
+
+        if anwser_is_no == "n":
+            return None
 
         scan_path = self._get_path("Choose a path for fast scan: ")
 
@@ -138,12 +138,8 @@ class AntyWirusUI:
         print(f"Success !!! Index file is in: {files_path}")
 
     def _load_existing_file(self):
-        anwser_is_no = None
         if self._antivirus.is_index_file_loaded():
-            anwser_is_no = self._remove_loaded_index_file("continue")
-
-        if anwser_is_no == "n":
-            return None
+            self._remove_loaded_index_file("continue")
 
         load_path = self._get_load_path()
 

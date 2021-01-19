@@ -39,6 +39,9 @@ def repair_dangerous_string(handle, file_str, virus_str):
 
 
 def get_file_object(file_name, path):
+    """
+    Converts strings to file object
+    """
     os.chdir(path)
     info = os.stat(file_name)
 

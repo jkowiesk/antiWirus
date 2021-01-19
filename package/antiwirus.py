@@ -55,6 +55,9 @@ class AntiWirus():
         self._index_file.dump_to_index_file()
 
     def get_scan_path(self):
+        """
+        Get scans path for index file
+        """
         if self._index_file.files_list():
             paths = []
             for file in self._index_file.files_list():
@@ -80,6 +83,9 @@ class AntiWirus():
         self._index_file.dump_to_index_file()
 
     def update_index_file(self):
+        """
+        Updates index file
+        """
         scan_path = self._index_file.scan_path()
         if scan_path:
             self.get_files_to_index_file(scan_path)
@@ -98,6 +104,10 @@ class AntiWirus():
         self._index_file.set_files_list(files)
 
     def fast_scan(self) -> list:
+        """
+        Checks if files was modified and scans them if they were. Returns viruses list with rule which file failed,
+        what file contains and file object
+        """
         scan_path = self._index_file.scan_path()
         files = self._get_files(scan_path)
         viruses = []
@@ -110,6 +120,10 @@ class AntiWirus():
         return viruses
 
     def easy_scan(self, path) -> list:
+        """
+        Scans files and returns viruses list with rule which file failed, what file
+        contains and file object
+        """
         files = self._get_files_easy_scan(path)
         viruses = []
         for file in files:
@@ -120,16 +134,25 @@ class AntiWirus():
         return viruses
 
     def repair_fast_scan(self, viruses):
+        """
+        Repairs virused files for fast scan
+        """
         for file, file_str, rule in viruses:
             new_file = rule(file, file_str, mode="repair")
             self._index_file.change_file(file, new_file)
         self._set_files_scan_time()
 
     def repair_easy_scan(self, viruses):
+        """
+        Repairs virused files for easy scan
+        """
         for file, file_str, rule in viruses:
             rule(file, file_str, mode="repair")
 
     def _get_files_easy_scan(self, path) -> list:
+        """
+        Returns list of files in given path and adds scan date
+        """
         os.chdir(path)
         files = []
         for file_name in os.listdir():
@@ -144,6 +167,9 @@ class AntiWirus():
         return files
 
     def _get_files(self, path) -> list:
+        """
+        Returns list of files in given path
+        """
         os.chdir(path)
         files = []
         for file_name in os.listdir():
