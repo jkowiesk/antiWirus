@@ -1,3 +1,11 @@
+"""
+antiwirus_ui.py - simple text interface for antivirus
+
+It stores the AntiVirus object and the last time checked status.
+It is responsible for correct communication between the user and the AntiVirus class.
+The most important function is _run (), which handles the operation menu.
+It also implements recurring quick state calling using the time module.
+"""
 from .antiwirus import AntiWirus
 import sys
 import os
@@ -5,7 +13,7 @@ from time import time, sleep
 
 global CYCLE_TIME
 
-CYCLE_TIME = 60
+CYCLE_TIME = 600
 
 
 class AntyWirusUI:

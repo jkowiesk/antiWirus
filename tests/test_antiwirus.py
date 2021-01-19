@@ -1,5 +1,6 @@
-from ..package.antiwirus import AntiWirus
+from ..package.antiwirus import AntiWirus, ScanPathError
 import os
+import pytest
 PATH = os.getcwd()
 
 
@@ -19,3 +20,9 @@ def test_easy_scan_viruses():
     antywirus = AntiWirus()
     viruses = antywirus.easy_scan(path)
     assert len(viruses) == 4
+
+def test_scan_path_error():
+    antivirus = AntiWirus()
+    with pytest.raises(ScanPathError):
+        antivirus.update_index_file()
+

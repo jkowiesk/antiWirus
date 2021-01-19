@@ -1,7 +1,14 @@
+"""
+index_file.py - simple "database" type class
+
+Contains a list of File objects, an absolute scan path,
+and an absolute path to the folder where the ".index_file" file is located.
+It allows you to perform various operations on files, replace the old with a new one, delete or simply add to the list.
+Thanks to the antiwirus_io module, it can also create, read and overwrite the ".index_file" file.
+"""
 from .file import File
 from .antiwirus_io import read_from_index_file, write_to_index_file
-import os
-CWD = os.getcwd()
+from .settings import CWD
 
 
 class IndexFile():

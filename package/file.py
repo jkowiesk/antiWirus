@@ -1,4 +1,8 @@
-import time
+"""
+file.py - simple file class witch contains most important info about them
+
+The most important method is the ability to check whether a given file has been modified
+"""
 from datetime import datetime
 
 

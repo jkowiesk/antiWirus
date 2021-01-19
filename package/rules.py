@@ -4,9 +4,10 @@ from .antiwirus_io import (read_from_index_file,
                            repair_dangerous_string)
 import json
 import os
+from .settings import CWD
 RULES = []
 
-path = f"{os.getcwd()}/secrets.json"
+path = f"{CWD}/secrets.json"
 
 secrets = get_secrets()
 

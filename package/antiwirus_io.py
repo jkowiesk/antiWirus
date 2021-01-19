@@ -1,10 +1,14 @@
+"""
+antiwirus_io.py - is responsible for getting Input from files, and writing output to them.
+
+"""
 import csv
 import os
 import time
 from .file import File
 from datetime import datetime
 import json
-
+from .settings import CWD
 
 def read_from_index_file(handle):
     reader = csv.DictReader(handle, delimiter=",")
@@ -61,7 +65,7 @@ def get_files_str(file):
 
 
 def get_secrets():
-    path = f"{os.getcwd()}/package/secrets.json"
+    path = f"{CWD}/secrets.json"
     with open(path, "r") as handle:
         secrets = json.load(handle)
     return secrets

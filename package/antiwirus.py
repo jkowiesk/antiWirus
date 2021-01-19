@@ -1,9 +1,21 @@
+"""
+antiwirus.py - class with all the most important methods
+
+Contains an IndexFile object and a list of rules type functions.
+It is the only class that communicates with the interface.
+Class has methods that enable fast scanning, simple scanning,
+repairing - cutting out viruses and updating the IndexFile object.
+"""
 from .index_file import IndexFile, File
 from .antiwirus_io import get_file_object, get_files_str
 from .rules import RULES
 from datetime import datetime
 import time
 import os
+
+
+class ScanPathError(Exception):
+    pass
 
 
 class AntiWirus():
@@ -72,7 +84,7 @@ class AntiWirus():
         if scan_path:
             self.get_files_to_index_file(scan_path)
         else:
-            raise Exception
+            raise ScanPathError("Scan path of index does not exist")
 
     def _set_files_scan_time(self):
         scan_date = time.time()
@@ -85,7 +97,7 @@ class AntiWirus():
             files.append(file)
         self._index_file.set_files_list(files)
 
-    def fast_scan(self):
+    def fast_scan(self) -> list:
         scan_path = self._index_file.scan_path()
         files = self._get_files(scan_path)
         viruses = []
@@ -97,7 +109,7 @@ class AntiWirus():
                         viruses.append((file, file_str, rule))
         return viruses
 
-    def easy_scan(self, path):
+    def easy_scan(self, path) -> list:
         files = self._get_files_easy_scan(path)
         viruses = []
         for file in files:
@@ -115,20 +127,23 @@ class AntiWirus():
 
     def repair_easy_scan(self, viruses):
         for file, file_str, rule in viruses:
-            new_file = rule(file, file_str, mode="repair")
+            rule(file, file_str, mode="repair")
 
-    def _get_files_easy_scan(self, path):
+    def _get_files_easy_scan(self, path) -> list:
         os.chdir(path)
         files = []
         for file_name in os.listdir():
-            file = get_file_object(file_name, path)
+            try:
+                file = get_file_object(file_name, path)
+            except FileNotFoundError:
+                continue
             if file.ftype == "folder":
                 files += self._get_files_easy_scan(f"{path}/{file.name}")
             else:
                 files.append(file)
         return files
 
-    def _get_files(self, path):
+    def _get_files(self, path) -> list:
         os.chdir(path)
         files = []
         for file_name in os.listdir():
