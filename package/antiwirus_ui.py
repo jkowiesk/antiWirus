@@ -10,10 +10,7 @@ from .antiwirus import AntiWirus
 import sys
 import os
 from time import time, sleep
-
-global CYCLE_TIME
-
-CYCLE_TIME = 600
+from .settings import CYCLE_TIME
 
 
 class AntyWirusUI:
@@ -95,7 +92,7 @@ class AntyWirusUI:
         elif anwser == "n" or anwser == "N":
             if mode == "continue":
                 return None
-            self._run()
+            return "n"
         else:
             print('Indvalid character. Only valid characters are "y" - yes and "n" - no')
             self._remove_loaded_index_file()
@@ -106,7 +103,7 @@ class AntyWirusUI:
             self._antivirus.set_index_file_path(files_path)
             self._antivirus.remove_index_file()
         elif anwser == "n" or anwser == "N":
-            self._run()
+            return "n"
         else:
             print('Indvalid character. Only valid characters are "y" - yes and "n" - no')
             self._remove_existing_index_file(files_path)
@@ -119,11 +116,15 @@ class AntyWirusUI:
             return False
         else:
             print('Indvalid character. Only valid characters are "y" - yes and "n" - no')
-            self._remove_existing_index_file(files_path)
+            self._if_repair()
 
     def _set_new_index_file(self):
+        anwser_is_no = None
         if self._antivirus.is_index_file_loaded():
-            self._remove_loaded_index_file()
+            anwser_is_no = self._remove_loaded_index_file()
+
+        if anwser_is_no == "n":
+            return None
 
         files_path = self._get_path("Choose a path for index file: ")
 
@@ -137,8 +138,12 @@ class AntyWirusUI:
         print(f"Success !!! Index file is in: {files_path}")
 
     def _load_existing_file(self):
+        anwser_is_no = None
         if self._antivirus.is_index_file_loaded():
-            self._remove_loaded_index_file("continue")
+            anwser_is_no = self._remove_loaded_index_file("continue")
+
+        if anwser_is_no == "n":
+            return None
 
         load_path = self._get_load_path()
 
@@ -200,7 +205,7 @@ class AntyWirusUI:
             if time() - self._prev >= CYCLE_TIME and self._antivirus.is_index_file_loaded():
                 self._prev = time()
                 self._full_fast_scan_cycle()
-                sleep(1)
+                sleep(3)
             self._print_options()
             options = self._get_options()
             try:

@@ -1,5 +1,6 @@
 from ..package.index_file import IndexFile, File
 from datetime import datetime
+from ..package.settings import CWD
 
 
 def test_change_file():
@@ -41,3 +42,9 @@ def test_get_scan_date():
     index_file.add_file(file2)
     assert index_file.get_scan_date(file1) == datetime.strptime("2020-12-25 19:30:56", "%Y-%m-%d %H:%M:%S")
     assert not index_file.get_scan_date(file2)
+
+
+def test_set_path():
+    index_file = IndexFile()
+    index_file.set_path()
+    assert index_file.path() == CWD
